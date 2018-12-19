@@ -1,5 +1,5 @@
 1) Download project
-2) Open project (HardwareChat.ino) Arduino IDE
+2) Open project (HardwareChat.ino) in the Arduino IDE
 3) Pick your microcontroller (ESP8266 support for now, more will come later!)
 4) Enter your WiFi SSID and Password at the top of the script!
 5) Upload the firmware
