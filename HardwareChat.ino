@@ -24,7 +24,6 @@ String userName = "";
 void setup() 
 {
   Serial.begin(115200);
-  while(!Serial){delay(1);}
   SetCredentials();
   ConnectToWiFi();
   client.begin(MQTT_SERVER, net);
@@ -34,8 +33,14 @@ void setup()
 
 void SetCredentials()
 {
-  Serial.println("Please enter your username [16 chars max]: ");
-  while(!Serial.available()){delay(1);}
+  uint16_t count = 0;
+  while(!Serial.available())
+  {
+    if(count % 5000 == 0)
+      Serial.println("Please enter your username [16 chars max]");
+    count++;
+    delay(1);
+  }
   while(Serial.available())
   {
     userName = Serial.readString(); 
@@ -43,7 +48,6 @@ void SetCredentials()
   }
   if(userName.length() > 16)
     userName.remove(16);
-  //if(userName.endsWith(char(0x0D)))
   userName.trim();
   Serial.print("Your username will be: "); Serial.println(userName);
 }
@@ -51,12 +55,9 @@ void SetCredentials()
 bool ConnectToWiFi()
 {
   Serial.print("Connecting to AP: "); Serial.println(AP_SSID);
-  WiFi.begin(AP_SSID, AP_PASS);
-  while(WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-  }
+  //WiFi.mode(WIFI_STA);
+  if (WiFi.status() != WL_CONNECTED) 
+    WiFi.begin(AP_SSID, AP_PASS);
   Serial.println();
   Serial.println("Connected to WiFi AP");
   return true;
@@ -102,7 +103,7 @@ void loop()
   }
   if(sendBuf != "")
   {
-    client.publish("/chat", "["+userName+"] "+sendBuf, false, 2);
+    client.publish("/chat", "["+userName+"] "+sendBuf, false, 1);
     sendBuf = "";
   }
 }
