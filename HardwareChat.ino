@@ -118,7 +118,9 @@ void loop()
       yield();
     }
     sendBuf.replace(sendTo+" ", "");
-    client.publish("/"+sendTo, "[PM]["+userName+"] "+sendBuf, false, 1);
+    String pmString = "[PM]["+userName+"] "+sendBuf;
+    client.publish("/"+sendTo, pmString, false, 1);
+    Serial.println(pmString);
     sendBuf = "";
   }
 
