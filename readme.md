@@ -9,7 +9,7 @@
 
 All messages are public, even the "private" ones. There is no encryption. Do not use for sensitive information (duh)
 
-To send a private message, use this format (names are case-sensitive):
+To send a private message, use this format (names are not case-sensitive):
 
 `!pm targetName your message goes here.`
 
