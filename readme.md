@@ -11,4 +11,8 @@ All messages are public, even the "private" ones. There is no encryption. Do not
 
 To send a private message, use this format (names are case-sensitive):
 
-!pm targetName your message goes here.
+`!pm targetName your message goes here.`
+
+To see who else is online, type:
+
+`!list`
