@@ -96,11 +96,35 @@ void loop()
   {
     ConnectToBroker();
   }
+
+  //Wait for serial input
   while(Serial.available())
   {
     sendBuf = Serial.readString();
     yield();
   }
+
+  //Private messaging
+  if(sendBuf.startsWith("!pm"))
+  {
+    sendBuf.replace("!pm ", "");
+    String sendTo = "";
+    int i = 0;
+    while(true)
+    {
+      sendTo += sendBuf[i];
+      i++;
+      if(sendBuf[i] == ' ')
+        break;
+      yield();
+    }
+    sendBuf.replace(sendTo+" ", "");
+    client.publish("/"+sendTo, "[PM]["+userName+"] "+sendBuf, false, 1);
+    sendBuf = "";
+  }
+
+
+  //Public messaging 
   if(sendBuf != "")
   {
     client.publish("/chat", "["+userName+"] "+sendBuf, false, 1);
