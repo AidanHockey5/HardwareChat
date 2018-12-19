@@ -93,7 +93,7 @@ void Incomming(String &topic, String &payload)
     }
     else if(payload == "0")
     {
-      if(onlineCount > 0)
+      if(onlineCount > 1)
         onlineCount--;
       onlineUserList.replace(topic+", ", "");
     }
