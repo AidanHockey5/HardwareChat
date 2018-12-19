@@ -6,10 +6,11 @@
 //Have fun and be nice!
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!ADD YOUR WIFI CREDENTIALS!
+//!ADD YOUR CREDENTIALS!
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#define AP_SSID "ADD_YOUR_WIFI_SSID_HERE"
-#define AP_PASS "ADD_YOUR_WIFI_PASSWORD_HERE"
+#define AP_SSID  "ADD_YOUR_WIFI_SSID_HERE"
+#define AP_PASS  "ADD_YOUR_WIFI_PASSWORD_HERE"
+#define USERNAME "PUT_YOUR_USER_NAME_HERE" //Please keep your username under 16 characters 
 
 #define MQTT_SERVER "mqtt.aidanlawrence.com"
 
@@ -19,43 +20,34 @@
 
 WiFiClient net;
 MQTTClient client(256);
-String userName = "";
+String usernameAllCaps = USERNAME;
+bool joined = false;
+uint32_t onlineCount = 0;
+String onlineUserList = "";
 
 void setup() 
 {
+  usernameAllCaps.toUpperCase();
   Serial.begin(115200);
-  SetCredentials();
+  uint16_t count = 0;
+  while(!Serial.available())
+  {
+    if(count % 3000 == 0)
+      Serial.println("Enter any character to connect to the chat server");
+    count++;
+    delay(1);
+  }
+  while(Serial.available()){Serial.read();}
+  Serial.print("Your username will be: "); Serial.println(USERNAME);
   ConnectToWiFi();
   client.begin(MQTT_SERVER, net);
   client.onMessage(Incomming);
   ConnectToBroker();
 }
 
-void SetCredentials()
-{
-  uint16_t count = 0;
-  while(!Serial.available())
-  {
-    if(count % 5000 == 0)
-      Serial.println("Please enter your username [16 chars max]");
-    count++;
-    delay(1);
-  }
-  while(Serial.available())
-  {
-    userName = Serial.readString(); 
-    delay(1);
-  }
-  if(userName.length() > 16)
-    userName.remove(16);
-  userName.trim();
-  Serial.print("Your username will be: "); Serial.println(userName);
-}
-
 bool ConnectToWiFi()
 {
   Serial.print("Connecting to AP: "); Serial.println(AP_SSID);
-  //WiFi.mode(WIFI_STA);
   if (WiFi.status() != WL_CONNECTED) 
     WiFi.begin(AP_SSID, AP_PASS);
   Serial.println();
@@ -65,22 +57,48 @@ bool ConnectToWiFi()
 
 bool ConnectToBroker()
 {
+  onlineUserList = "";
+  onlineCount = 0;
   Serial.print("Attempting to connect to: "); Serial.println(MQTT_SERVER);
-  while(!client.connect(&userName[0u], &userName[0u]))
+  String willTopic = "/online/"+String(USERNAME)+"/";
+  char *wt = &willTopic[0u];
+  client.setWill(wt, "0", true, 2); //Mark user as offline if the client DCs
+  while(!client.connect(USERNAME, USERNAME))
   {
     Serial.print(".");
     delay(500);
   }
   Serial.println();
   Serial.println("Connected! Have fun and be nice!");
+  Serial.println("Type !list to see who else is online!");
+  client.subscribe("/online/#");
   client.subscribe("/chat"); //Subscribe to the main chat
-  client.subscribe("/"+userName); //Subscribe to private messages (NOTE, THESE ARE NOT SECURE AT ALL! Anyone can see these PMs if they try!)
-  client.publish("/chat", userName+" has joined the chat.", false, 2);
+  client.subscribe("/"+usernameAllCaps); //Subscribe to private messages (NOTE, THESE ARE NOT SECURE AT ALL! Anyone can see these PMs if they try!)
+  client.publish("/chat", String(USERNAME)+" has joined the chat.", false, 2);
+  client.publish("/online/"+String(USERNAME)+"/", "1", true, 2); //Mark user as "online"
   return true;
 }
 
 void Incomming(String &topic, String &payload)
 {
+  if(topic.startsWith("/online"))
+  {
+    topic.replace("/online/", "");
+    topic.remove(topic.length()-1); //remove the trailing '/' at the end of the topic.
+    if(payload == "1")
+    {
+      if(onlineCount < 4294967295)
+        onlineCount++;
+      onlineUserList += topic + ", ";
+    }
+    else if(payload == "0")
+    {
+      if(onlineCount > 0)
+        onlineCount--;
+      onlineUserList.replace(topic+", ", "");
+    }
+    return;
+  }
   Serial.println(payload);
 }
 
@@ -118,17 +136,23 @@ void loop()
       yield();
     }
     sendBuf.replace(sendTo+" ", "");
-    String pmString = "[PM]["+userName+"] "+sendBuf;
+    sendTo.toUpperCase();
+    String pmString = "[PM]["+String(USERNAME)+"] "+sendBuf;
     client.publish("/"+sendTo, pmString, false, 1);
     Serial.println(pmString);
     sendBuf = "";
   }
-
+  else if(sendBuf.startsWith("!list"))
+  {
+    Serial.print("Users online: "); Serial.println(onlineCount);
+    Serial.println(onlineUserList);
+    sendBuf = "";
+  }
 
   //Public messaging 
   if(sendBuf != "")
   {
-    client.publish("/chat", "["+userName+"] "+sendBuf, false, 1);
+    client.publish("/chat", "["+String(USERNAME)+"] "+sendBuf, false, 1);
     sendBuf = "";
   }
 }
