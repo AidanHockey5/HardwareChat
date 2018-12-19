@@ -75,7 +75,6 @@ bool ConnectToBroker()
   Serial.println("Connected! Have fun and be nice!");
   client.subscribe("/chat"); //Subscribe to the main chat
   client.subscribe("/"+userName); //Subscribe to private messages (NOTE, THESE ARE NOT SECURE AT ALL! Anyone can see these PMs if they try!)
-  
   client.publish("/chat", userName+" has joined the chat.", false, 2);
   return true;
 }
