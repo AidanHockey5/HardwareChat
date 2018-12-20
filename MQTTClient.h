@@ -121,7 +121,7 @@ class MQTTClient {
 
   uint16_t keepAlive = 10;
   bool cleanSession = true;
-  uint32_t timeout = 1000;
+  uint32_t timeout = 6000;
 
   Client *netClient = nullptr;
   const char *hostname = nullptr;
