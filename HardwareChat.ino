@@ -14,7 +14,15 @@
 
 #define MQTT_SERVER "mqtt.aidanlawrence.com"
 
+#if defined(ESP8266)
 #include <ESP8266WiFi.h>
+#elif defined(ESP32)
+#include <WiFi.h>
+#elif defined(ARDUINO_SAMD_ZERO)
+#include <SPI.h>
+#include <WiFi101.h>
+#endif
+
 #include <WiFiClient.h>
 #include "MQTT.h"
 
@@ -27,6 +35,10 @@ String onlineUserList = "";
 
 void setup() 
 {
+  #if defined(ARDUINO_SAMD_ZERO)
+  WiFi.setPins(8,7,4,2);
+  #endif
+  
   usernameAllCaps.toUpperCase();
   Serial.begin(115200);
   uint16_t count = 0;
@@ -37,7 +49,8 @@ void setup()
     count++;
     delay(1);
   }
-  while(Serial.available()){Serial.read();}
+  while(Serial.available()){Serial.read(); yield();}
+  randomSeed(millis());
   Serial.print("Your username will be: "); Serial.println(USERNAME);
   ConnectToWiFi();
   client.begin(MQTT_SERVER, net);
@@ -63,7 +76,9 @@ bool ConnectToBroker()
   String willTopic = "/online/"+String(USERNAME)+"/";
   char *wt = &willTopic[0u];
   client.setWill(wt, "0", true, 2); //Mark user as offline if the client DCs
-  while(!client.connect(USERNAME, USERNAME))
+  String cID = USERNAME;
+  cID += String(rand());
+  while(!client.connect(&cID[0u], USERNAME))
   {
     Serial.print(".");
     delay(500);
@@ -89,6 +104,8 @@ void Incomming(String &topic, String &payload)
     {
       if(onlineCount < 4294967295)
         onlineCount++;
+      if(onlineUserList.indexOf(topic) > 0) //If that user is already listed as online, don't bother adding them to the list.
+        return; 
       onlineUserList += topic + ", ";
     }
     else if(payload == "0")
@@ -106,7 +123,7 @@ String sendBuf = "";
 void loop() 
 {
   client.loop();
-  #if defined(ESP8266)
+  #if defined(ESP8266) || defined(ESP32)
   delay(10);
   #endif
   if(!client.connected())
