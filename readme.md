@@ -1,10 +1,9 @@
 1) Download project
 2) Open project (HardwareChat.ino) in the Arduino IDE
 3) Pick your microcontroller (ESP8266 support for now, more will come later!)
-4) Enter your WiFi SSID and Password at the top of the script!
+4) Enter your WiFi SSID and Password and Username at the top of the script!
 5) Upload the firmware
 6) Open up your serial console at 115200 baud, No line ending
-7) Enter a username and have fun!
 
 
 All messages are public, even the "private" ones. There is no encryption. Do not use for sensitive information (duh)
