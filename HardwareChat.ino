@@ -8,9 +8,9 @@
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //!ADD YOUR CREDENTIALS!
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#define AP_SSID  "Lawrence_Net"
-#define AP_PASS  "9514153055"
-#define USERNAME "TestBoi5" //Please keep your username under 16 characters 
+#define AP_SSID  "ADD_YOUR_WIFI_SSID_HERE"
+#define AP_PASS  "ADD_YOUR_WIFI_PASSWORD_HERE"
+#define USERNAME "PUT_YOUR_USER_NAME_HERE" //Please keep your username under 16 characters 
 
 #define MQTT_SERVER "mqtt.aidanlawrence.com"
 
