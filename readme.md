@@ -20,11 +20,15 @@ To see who else is online, type:
 
 `!list`
 
-What is MQTT? Adafruit has a super great guide on the subject!
+# What is MQTT? 
+
+Adafruit has a super great guide on the subject!
 https://learn.adafruit.com/adafruit-io/mqtt-api
 https://youtu.be/shqLy8XjqAQ?t=669
 
-You can also create your own MQTT servers! I recommend using the Mosquitto broker. It's free, easy to install, and works well
+# You can also create your own MQTT servers! 
+
+I recommend using the Mosquitto broker. It's free, easy to install, and works well.
 
 https://mosquitto.org/ 
 
