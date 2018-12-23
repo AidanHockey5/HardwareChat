@@ -48,4 +48,6 @@ This project is just for fun. Everything you post through the chat client is une
 
 IP addresses are not transmitted between clients, so there isn't any need to worry about somebody getting ahold of yours should you connect.
 
+In the name of simplicity, there is no username authentication. It is possible for other people to use the same name as you to recieve your PMs.
+
 I am not personally responsible for any user-generated content on the chat server. 
