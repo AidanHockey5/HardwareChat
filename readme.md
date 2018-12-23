@@ -29,7 +29,9 @@ You can also create your own MQTT servers! I recommend using the Mosquitto broke
 https://mosquitto.org/ 
 
 Installing Mosquitto on an Ubuntu server is simple! Just run this command:
+
 `sudo apt-get install mosquitto mosquitto-clients`
+
 ... and forward port `1883`. That's it!
 
 For more information and how to enable encryption, read this article.
