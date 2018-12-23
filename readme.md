@@ -41,3 +41,5 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-the-m
 This project is just for fun. Everything you post through the chat client is unencrypted and not secure. Do not post any sensitive information, duh.
 
 IP addresses are not transmitted between clients, so there isn't any need to worry about somebody getting ahold of yours should you connect.
+
+I am not personally responsible for any user-generated content on the chat server. 
