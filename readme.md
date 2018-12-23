@@ -1,3 +1,7 @@
+# Hardware Chat!
+
+A global chat client that you can use to connect to people around the world through your internet-enabled microcontroller!
+
 1) Download project
 2) Open project (HardwareChat.ino) in the Arduino IDE
 3) Pick your microcontroller (Supports ESP8266 boards and Adafruit Feather M0 Wifi (ATWINC1500))
@@ -30,3 +34,10 @@ Installing Mosquitto on an Ubuntu server is simple! Just run this command:
 
 For more information and how to enable encryption, read this article.
 https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-the-mosquitto-mqtt-messaging-broker-on-ubuntu-16-04
+
+
+# Disclaimers 
+
+This project is just for fun. Everything you post through the chat client is unencrypted and not secure. Do not post any sensitive information, duh.
+
+IP addresses are not transmitted between clients, so there isn't any need to worry about somebody getting ahold of yours should you connect.
