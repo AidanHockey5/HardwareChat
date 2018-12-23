@@ -4,6 +4,7 @@
 //IP Addresses are not shared to any other client.
 //Yes, of course you can modify this script and have some fun, just be cool about it when connecting to the server, please!
 //Have fun and be nice!
+//https://github.com/AidanHockey5/HardwareChat
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //!ADD YOUR CREDENTIALS!
