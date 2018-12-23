@@ -2,6 +2,8 @@
 
 A global chat client that you can use to connect to people around the world through your internet-enabled microcontroller!
 
+https://youtu.be/Vr7Fko-YIYw
+
 1) Download project
 2) Open project (HardwareChat.ino) in the Arduino IDE
 3) Pick your microcontroller (Supports ESP8266 boards and Adafruit Feather M0 Wifi (ATWINC1500))
